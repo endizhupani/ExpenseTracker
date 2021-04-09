@@ -10,7 +10,6 @@ namespace ExpenseTracker.Domain.Entities.Configuration.CsvConfigurationAggregate
     public class CsvFileColumn:Entity
     {
         public string Name { get; set; }
-        //public string DataTypeName { get; set; }
 
         public int Position { get; set; }
 

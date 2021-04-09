@@ -26,7 +26,7 @@ namespace ExpenseTracker.Domain.Entities.Configuration.CsvConfigurationAggregate
 
         public virtual ICollection<CsvFileColumn> CsvFileColumns { get; private set; }
 
-        public int BankId { get; private set; }
+        public long BankId { get; private set; }
         public Bank Bank { get; private set; }
     }
 }
