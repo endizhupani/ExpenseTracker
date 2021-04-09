@@ -52,6 +52,16 @@ namespace ExpenseTracker.Domain.Common
             PreDbCommitDomainEvents.Add(eventItem);
         }
 
+        public void ClearPreCommitDomainEvents()
+        {
+            PreDbCommitDomainEvents?.Clear();
+        }
+
+        public void ClearPostCommitDomainEvents()
+        {
+            PostDbCommitDomainEvents?.Clear();
+        }
+
         public override bool Equals(object obj)
         {
             if (!(obj is Entity))

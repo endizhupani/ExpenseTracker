@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using ExpenseTracker.Domain.Common;
 
-namespace ExpenseTracker.Domain.Entities.Configuration
+namespace ExpenseTracker.Domain.Entities.Configuration.BankAggregate
 {
     /// <summary>
     /// A bank which can have one or more accounts

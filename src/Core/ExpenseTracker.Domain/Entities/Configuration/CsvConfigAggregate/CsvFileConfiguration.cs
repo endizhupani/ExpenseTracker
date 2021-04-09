@@ -2,16 +2,16 @@
 using Ardalis.GuardClauses;
 using ExpenseTracker.Domain.Common;
 
-namespace ExpenseTracker.Domain.Entities.Configuration.CsvConfigurationAggregate
+namespace ExpenseTracker.Domain.Entities.Configuration.BankAggregate
 {
     /// <summary>
     /// Describes the information that can be seen in a CSV file of exported records from the bank's database
     /// </summary>
-    public class CsvFileConfiguration :Entity
+    public class CsvFileConfiguration :Entity, IAggregateRoot
     {
+        private List<CsvFileColumn> _csvFileColumns = new List<CsvFileColumn>();
         private CsvFileConfiguration()
         {
-            CsvFileColumns = new List<CsvFileColumn>();
         }
 
         /// <summary>
@@ -42,7 +42,18 @@ namespace ExpenseTracker.Domain.Entities.Configuration.CsvConfigurationAggregate
         /// <summary>
         /// Descriptions for the CSV file columns
         /// </summary>
-        public virtual ICollection<CsvFileColumn> CsvFileColumns { get; private set; }
+        public virtual IReadOnlyCollection<CsvFileColumn> CsvFileColumns =>
+            _csvFileColumns.AsReadOnly();
+
+        public void AddColumn(CsvFileColumn csvFileColumn)
+        {
+            _csvFileColumns.Add(csvFileColumn);
+        }
+
+        public void RemoveColumn(CsvFileColumn column)
+        {
+            _csvFileColumns.Remove(column);
+        }
 
         public int BankId { get; private set; }
         public Bank Bank { get; private set; }
