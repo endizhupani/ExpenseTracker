@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using System;
 using System.Collections.Generic;
 
 namespace ExpenseTracker.Domain.Common
@@ -13,30 +12,20 @@ namespace ExpenseTracker.Domain.Common
 
         public virtual int Id { get; set; }
 
-        public ICollection<INotification> PostDbCommitDomainEvents { get;
+        /// <summary>
+        /// Collection of domain events that should be dispatched after the data is committed to the database.
+        /// </summary>
+        public ICollection<INotification> PostDbCommitDomainEvents
+        {
+            get;
             private set;
-        } 
+        }
+
+        /// <summary>
+        /// Collection of domain events that should be dispatched right before the data is committed
+        /// to the database.
+        /// </summary>
         public ICollection<INotification> PreDbCommitDomainEvents { get; private set; }
-
-        public void AddPostCommitDomainEvent(INotification eventItem)
-        {
-            PostDbCommitDomainEvents ??= new List<INotification>();
-            PostDbCommitDomainEvents.Add(eventItem);
-        }
-        public void RemovePostCommitDomainEvent(INotification eventItem)
-        {
-            PostDbCommitDomainEvents?.Remove(eventItem);
-        }
-
-        public void AddPreCommitDomainEvent(INotification eventItem)
-        {
-            PreDbCommitDomainEvents ??= new List<INotification>();
-            PreDbCommitDomainEvents.Add(eventItem);
-        }
-        public void RemovePreCommitDomainEvent(INotification eventItem)
-        {
-            PreDbCommitDomainEvents?.Remove(eventItem);
-        }
 
         public static bool operator !=(Entity left, Entity right)
         {
@@ -45,10 +34,22 @@ namespace ExpenseTracker.Domain.Common
 
         public static bool operator ==(Entity left, Entity right)
         {
-            if (Object.Equals(left, null))
-                return (Object.Equals(right, null));
+            if (Equals(left, null))
+                return (right == null);
             else
                 return left.Equals(right);
+        }
+
+        public void AddPostCommitDomainEvent(INotification eventItem)
+        {
+            PostDbCommitDomainEvents ??= new List<INotification>();
+            PostDbCommitDomainEvents.Add(eventItem);
+        }
+
+        public void AddPreCommitDomainEvent(INotification eventItem)
+        {
+            PreDbCommitDomainEvents ??= new List<INotification>();
+            PreDbCommitDomainEvents.Add(eventItem);
         }
 
         public override bool Equals(object obj)
@@ -80,6 +81,16 @@ namespace ExpenseTracker.Domain.Common
         public bool IsTransient()
         {
             return Id == default;
+        }
+
+        public void RemovePostCommitDomainEvent(INotification eventItem)
+        {
+            PostDbCommitDomainEvents?.Remove(eventItem);
+        }
+
+        public void RemovePreCommitDomainEvent(INotification eventItem)
+        {
+            PreDbCommitDomainEvents?.Remove(eventItem);
         }
     }
 }
