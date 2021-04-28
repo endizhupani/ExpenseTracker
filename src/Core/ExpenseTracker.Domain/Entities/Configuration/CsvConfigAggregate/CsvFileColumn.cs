@@ -13,10 +13,10 @@ namespace ExpenseTracker.Domain.Entities.Configuration.BankAggregate
             
         }
 
-        public CsvFileColumn(TransactionRecordColumn transactionRecordColumn, string name, string valueFormatString, int position)
+        public CsvFileColumn(TransactionRecordColumn transactionRecordColumn, string valueFormatString, int position)
         {
-            Guard.Against.NullOrEmpty(name, parameterName: nameof(name));
             Guard.Against.NullOrEmpty(valueFormatString, parameterName: nameof(valueFormatString));
+            Guard.Against.Negative(position, nameof(position));
 
             TransactionRecordColumn = transactionRecordColumn;
             if (transactionRecordColumn.Id > 0)
@@ -24,21 +24,26 @@ namespace ExpenseTracker.Domain.Entities.Configuration.BankAggregate
                 TransactionRecordColumnId = transactionRecordColumn.Id;
             }
 
-            Name = name;
             ValueFormatString = valueFormatString;
             Position = position;
         }
 
-        /// <summary>
-        /// Name of the column
-        /// </summary>
-        public string Name { get; private set; }
 
+        /// <summary>
+        /// 0 based order of the column in the CSV file
+        /// </summary>
         public int Position { get; private set; }
 
+        /// <summary>
+        /// Format string to convert the value from text to the specified data type in the <see cref="TransactionRecordColumn"/>
+        /// </summary>
         public string ValueFormatString { get; private set; }
 
         public int TransactionRecordColumnId { get; private set; }
+
+        /// <summary>
+        /// Column in the transaction record which this CSV file column will fill.
+        /// </summary>
         public virtual TransactionRecordColumn TransactionRecordColumn { get; private set; }
 
     }
